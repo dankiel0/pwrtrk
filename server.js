@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+const { PythonShell } = require('python-shell');
 const PORT = process.env.PORT || 5000;
 
 // Enable Cross-Origin Resource Sharing (CORS)
@@ -265,6 +266,27 @@ app.get('/api/exercises', (req, res) => {
 //       res.status(500).json({ error: 'Unable to insert random sample workouts' });
 //     });
 // });
+
+app.post('/api/predict-next-workout', (req, res) => {
+  const { workoutData } = req.body; // Assuming workoutData contains an array of workout data
+
+  // Pass the workoutData to the Python script for regression calculation
+  const options = {
+    pythonPath: 'path/to/python', // Specify your Python executable path
+    scriptPath: 'path/to/python_script', // Specify the directory containing the Python script
+    args: [JSON.stringify(workoutData)], // Pass the data as an argument to the Python script
+  };
+
+  PythonShell.run('linear_regression_script.py', options, (err, results) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Error in regression calculation' });
+    } else {
+      const predictedData = JSON.parse(results[0]); // Assuming the Python script returns JSON data
+      res.status(200).json({ predictedData });
+    }
+  });
+});
 
 // Define an API endpoint for creating a new workout
 app.post('/api/workouts', (req, res) => {

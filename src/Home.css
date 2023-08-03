@@ -1,0 +1,141 @@
+.Home {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .menu {
+    background-color: #f5f5f5;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .upper-menu {
+    color: #005ff7;
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+  }
+  
+  .upper-menu a {
+    margin-left: 10px;
+    color: #6da1f3;
+    text-decoration: none;
+  }
+  
+  .upper-menu a:hover {
+    text-decoration: underline;
+  }
+  
+  .content-container {
+    flex: 1;
+    display: flex;
+  }
+  
+  .side-nav {
+    width: 200px;
+    background-color: #f3f4f6;
+    padding: 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 70px); /* Adjust the height based on your upper-menu height and other paddings/margins */
+  }
+  
+  .search-exercise {
+
+    width: calc(100% - 22px); /* Adjust the width to match the button width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    text-align: left;
+  }
+
+  .button.highlighted {
+    background-color: #f0f0f0; /* Highlighted background color when clicked */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow effect when clicked */
+  }
+
+  .button:hover {
+    background-color: #f0f0f0; /* Highlighted background color when clicked */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add box shadow effect when clicked */
+  }
+  
+  .exercise-info-container {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .exercise-info {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .exercise-info h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #3b82f6;
+    margin-bottom: 10px;
+  }
+  
+  .exercise-info p {
+    font-size: 16px;
+    margin: 5px 0;
+  }
+  
+
+  .exercise-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .workout-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .workout-form label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+  
+  .workout-form input,
+  .workout-form textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 250px;
+  }
+  
+  .workout-form button {
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .chart-container {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+  }
+  

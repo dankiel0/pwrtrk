@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import './Login.css';
+import "./Login.css";
 
 const Login = () => {
   const [loginUsername, setLoginUsername] = useState("");
@@ -18,7 +18,11 @@ const Login = () => {
     setLoginError("");
 
     // Send login request to the server
-    axios.post("http://localhost:5000/api/login", { username: loginUsername, password: loginPassword })
+    axios
+      .post("http://localhost:5000/api/login", {
+        username: loginUsername,
+        password: loginPassword,
+      })
       .then((response) => {
         // Handle successful login
         console.log(response.data.message); // You can show a success message or redirect to the home page
@@ -36,7 +40,11 @@ const Login = () => {
     setRegisterError("");
 
     // Send registration request to the server
-    axios.post("http://localhost:5000/api/register", { username: registerUsername, password: registerPassword })
+    axios
+      .post("http://localhost:5000/api/register", {
+        username: registerUsername,
+        password: registerPassword,
+      })
       .then((response) => {
         // Handle successful registration
         console.log(response.data.message); // You can show a success message or redirect to the login page
@@ -123,7 +131,9 @@ const Login = () => {
               <td className="submit"></td>
               <td>
                 <input type="submit" value="Register"></input>
-                {registerError && <div className="error-msg">{registerError}</div>}
+                {registerError && (
+                  <div className="error-msg">{registerError}</div>
+                )}
               </td>
             </tr>
           </table>
@@ -131,6 +141,6 @@ const Login = () => {
       </form>
     </div>
   );
-}
+};
 
 export default Login;

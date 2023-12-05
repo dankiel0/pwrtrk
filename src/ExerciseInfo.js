@@ -1,6 +1,4 @@
-
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 import React, { useState, useEffect, useRef } from "react";
 import { Line } from "react-chartjs-2";
@@ -30,10 +28,14 @@ function ExerciseInfo({ exercise, selectedUser }) {
     if (selectedUser && exercise) {
       // Fetch workouts for the selected user and exercise
       axios
-        .get(`http://localhost:5000/api/workouts/${selectedUser.username}/${exercise}`)
+        .get(
+          `http://localhost:5000/api/workouts/${selectedUser.username}/${exercise}`
+        )
         .then((response) => {
           // Sort the workouts by date
-          const sortedWorkouts = response.data.sort((a, b) => new Date(a.date) - new Date(b.date));
+          const sortedWorkouts = response.data.sort(
+            (a, b) => new Date(a.date) - new Date(b.date)
+          );
           setWorkouts(sortedWorkouts);
         })
         .catch((error) => {
@@ -93,7 +95,9 @@ function ExerciseInfo({ exercise, selectedUser }) {
     }));
 
     // Implement your prediction logic here
-    const regressionModel = regression.linear(workoutData.map((point) => [point.x, point.y]));
+    const regressionModel = regression.linear(
+      workoutData.map((point) => [point.x, point.y])
+    );
 
     // Predict the next workout dates and weights
     const lastDate = new Date(workoutData[workoutData.length - 1].x);
@@ -120,7 +124,10 @@ function ExerciseInfo({ exercise, selectedUser }) {
     nextYear.setFullYear(nextYear.getFullYear() + 1);
     const nextYearX = nextYear.getTime();
     const regressionExtension = regressionModel.predict(nextYearX)[1];
-    predictedData.unshift({ x: nextYear, y: Math.max(regressionExtension, lastY) });
+    predictedData.unshift({
+      x: nextYear,
+      y: Math.max(regressionExtension, lastY),
+    });
 
     setPredictedData(predictedData);
   };
@@ -178,7 +185,9 @@ function ExerciseInfo({ exercise, selectedUser }) {
   const handleChartClick = (event) => {
     const chart = chartRef.current;
     if (chart) {
-      const activePoints = chart.getElementsAtEventForMode(event, "nearest", { intersect: true });
+      const activePoints = chart.getElementsAtEventForMode(event, "nearest", {
+        intersect: true,
+      });
       if (activePoints.length > 0) {
         const firstPoint = activePoints[0];
         const { datasetIndex, index } = firstPoint;
@@ -225,7 +234,7 @@ function ExerciseInfo({ exercise, selectedUser }) {
       },
     },
   };
-  
+
   return (
     <div className="exercise-info">
       {exercise}

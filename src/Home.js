@@ -86,7 +86,9 @@ function Home() {
               selectedUser={selectedUser}
             />
           )}
-          {!selectedExercise && <p>Please select an exercise to see details.</p>}
+          {!selectedExercise && (
+            <p>Please select an exercise to see details.</p>
+          )}
         </div>
       </div>
     </div>

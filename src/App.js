@@ -1,7 +1,12 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Login from './Login';
-import Home from './Home';
-import EditProfile from './EditProfile';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import Login from "./Login";
+import Home from "./Home";
+import EditProfile from "./EditProfile";
 
 function App() {
   return (

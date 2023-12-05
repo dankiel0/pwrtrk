@@ -1,58 +1,58 @@
 .Login {
-    background-color: lightblue;
-    width: 100vw;
-    height: 100vh;
+  background-color: lightblue;
+  width: 100vw;
+  height: 100vh;
 }
 
 .error-msg {
-    color: red;
+  color: red;
 }
 
 .form {
-    border: 3px solid black;
+  border: 3px solid black;
 }
 
 .side-panel {
-    float: left;
-    width: 15%;
-    margin: 0 5%;
-    background-color: brown;
-    height: 100vh;
+  float: left;
+  width: 15%;
+  margin: 0 5%;
+  background-color: brown;
+  height: 100vh;
 }
 
 .line {
-    display: block;
-    height: 1px;
-    border: 0;
-    border-top: 1px solid black;
-    margin: 1em 0;
-    padding: 0;
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid black;
+  margin: 1em 0;
+  padding: 0;
 }
 
 .center {
-    text-align: center;
+  text-align: center;
 }
 
 .bold {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .large-text {
-    font-size: 30px;
+  font-size: 30px;
 }
 
 fieldset {
-    width:320px;
-    font-family:Verdana, Arial, Helvetica, sans-serif;
-    font-size:14px;
+  width: 320px;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 14px;
 }
 
 legend {
-    width:100px;
-    text-align:center;
-    background:#DDE7F0;
-    border:solid 1px;
-    margin:1px;
-    font-weight:bold;
-    color:#0000FF;
+  width: 100px;
+  text-align: center;
+  background: #dde7f0;
+  border: solid 1px;
+  margin: 1px;
+  font-weight: bold;
+  color: #0000ff;
 }

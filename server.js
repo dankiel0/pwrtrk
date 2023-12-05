@@ -1,9 +1,9 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
-const { PythonShell } = require('python-shell');
+
 const PORT = process.env.PORT || 5000;
 
 // Enable Cross-Origin Resource Sharing (CORS)
@@ -13,10 +13,13 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Connect to MongoDB (replace 'your-mongodb-uri' with your MongoDB connection string)
-mongoose.connect('mongodb+srv://dankiel:FWSTFZZRCpaa72pH@prwtrk.eahtso9.mongodb.net/', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose.connect(
+  "mongodb+srv://dankiel:FWSTFZZRCpaa72pH@prwtrk.eahtso9.mongodb.net/",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  }
+);
 
 // Define a schema for the User model
 const userSchema = new mongoose.Schema({
@@ -26,7 +29,7 @@ const userSchema = new mongoose.Schema({
 });
 
 // Create a User model based on the schema
-const User = mongoose.model('User', userSchema);
+const User = mongoose.model("User", userSchema);
 
 // Define a schema for the Workout model
 const workoutSchema = new mongoose.Schema({
@@ -36,47 +39,48 @@ const workoutSchema = new mongoose.Schema({
   reps: { type: Number, required: true },
   date: { type: Date, required: true },
   rpe: { type: Number, required: true },
-  notes: { type: String, default: '' },
+  notes: { type: String, default: "" },
 });
 
 // Create a Workout model based on the schema
-const Workout = mongoose.model('Workout', workoutSchema);
+const Workout = mongoose.model("Workout", workoutSchema);
 
 // Define an API endpoint for user registration
-app.post('/api/register', (req, res) => {
+app.post("/api/register", (req, res) => {
   const { username, password } = req.body;
 
   // Create a new user document and save it to the database
   const newUser = new User({ username, password });
-  newUser.save()
+  newUser
+    .save()
     .then(() => {
-      res.status(201).json({ message: 'User registered successfully' });
+      res.status(201).json({ message: "User registered successfully" });
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Unable to register user' });
+      res.status(500).json({ error: "Unable to register user" });
     });
 });
 
 // Define an API endpoint for user login
-app.post('/api/login', (req, res) => {
+app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
 
   // Find the user in the database
   User.findOne({ username, password })
     .then((user) => {
       if (user) {
-        res.status(200).json({ message: 'Login successful' });
+        res.status(200).json({ message: "Login successful" });
       } else {
-        res.status(401).json({ error: 'Invalid username or password' });
+        res.status(401).json({ error: "Invalid username or password" });
       }
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Unable to login' });
+      res.status(500).json({ error: "Unable to login" });
     });
 });
 
 // Define an API endpoint to get the list of exercises
-app.get('/api/exercises', (req, res) => {
+app.get("/api/exercises", (req, res) => {
   // You can modify this array or fetch the exercises from a database
   const exercises = [
     "Squat",
@@ -178,7 +182,7 @@ app.get('/api/exercises', (req, res) => {
     "Dumbbell Hammer Curls",
     "Cable Bent Over Rows",
     "Close Grip Lat Pulldowns",
-    "Single-Arm Dumbbell Rows"
+    "Single-Arm Dumbbell Rows",
   ];
 
   res.json(exercises);
@@ -267,36 +271,15 @@ app.get('/api/exercises', (req, res) => {
 //     });
 // });
 
-app.post('/api/predict-next-workout', (req, res) => {
-  const { workoutData } = req.body; // Assuming workoutData contains an array of workout data
-
-  // Pass the workoutData to the Python script for regression calculation
-  const options = {
-    pythonPath: 'path/to/python', // Specify your Python executable path
-    scriptPath: 'path/to/python_script', // Specify the directory containing the Python script
-    args: [JSON.stringify(workoutData)], // Pass the data as an argument to the Python script
-  };
-
-  PythonShell.run('linear_regression_script.py', options, (err, results) => {
-    if (err) {
-      console.error(err);
-      res.status(500).json({ error: 'Error in regression calculation' });
-    } else {
-      const predictedData = JSON.parse(results[0]); // Assuming the Python script returns JSON data
-      res.status(200).json({ predictedData });
-    }
-  });
-});
-
 // Define an API endpoint for creating a new workout
-app.post('/api/workouts', (req, res) => {
+app.post("/api/workouts", (req, res) => {
   const { user, exercise, weight, reps, date, rpe, notes } = req.body;
 
   // Find the user in the database based on the username
   User.findOne({ username: user })
     .then((foundUser) => {
       if (!foundUser) {
-        return res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: "User not found" });
       }
 
       // Create a new workout document and save it to the database
@@ -310,26 +293,27 @@ app.post('/api/workouts', (req, res) => {
         notes,
       });
 
-      newWorkout.save()
+      newWorkout
+        .save()
         .then(() => {
-          res.status(201).json({ message: 'Workout created successfully' });
+          res.status(201).json({ message: "Workout created successfully" });
         })
         .catch((error) => {
-          res.status(500).json({ error: 'Unable to create workout' });
+          res.status(500).json({ error: "Unable to create workout" });
         });
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Unable to retrieve user data' });
+      res.status(500).json({ error: "Unable to retrieve user data" });
     });
 });
 
-app.get('/api/workouts/:username/:exercise', (req, res) => {
+app.get("/api/workouts/:username/:exercise", (req, res) => {
   const { username, exercise } = req.params;
 
   User.findOne({ username })
     .then((user) => {
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: "User not found" });
       }
 
       // Fetch workouts for the found user and exercise and send them in the response
@@ -338,27 +322,27 @@ app.get('/api/workouts/:username/:exercise', (req, res) => {
           res.status(200).json(workouts);
         })
         .catch((error) => {
-          res.status(500).json({ error: 'Unable to retrieve workout data' });
+          res.status(500).json({ error: "Unable to retrieve workout data" });
         });
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Unable to retrieve user data' });
+      res.status(500).json({ error: "Unable to retrieve user data" });
     });
 });
 
-app.get('/api/users/:username', (req, res) => {
+app.get("/api/users/:username", (req, res) => {
   const username = req.params.username;
 
   User.findOne({ username: username })
     .then((user) => {
       if (!user) {
-        return res.status(404).json({ error: 'User not found' });
+        return res.status(404).json({ error: "User not found" });
       }
 
       res.status(200).json(user);
     })
     .catch((error) => {
-      res.status(500).json({ error: 'Unable to retrieve user data' });
+      res.status(500).json({ error: "Unable to retrieve user data" });
     });
 });
 

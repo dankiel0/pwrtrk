@@ -34,7 +34,7 @@ function Home() {
         });
     }
   }, []);
-
+ 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
     setSelectedExercise(""); // Clear selected exercise when searching

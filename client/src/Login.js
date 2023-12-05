@@ -17,21 +17,17 @@ const Login = () => {
     e.preventDefault();
     setLoginError("");
 
-    // Send login request to the server
     axios
-      .post("http://localhost:5000/api/login", {
+      .post("http://localhost:5000/api/users/login", {
         username: loginUsername,
         password: loginPassword,
       })
       .then((response) => {
-        // Handle successful login
-        console.log(response.data.message); // You can show a success message or redirect to the home page
-        localStorage.setItem("username", loginUsername);
+        localStorage.setItem("token", response.data.token);
         navigate("/home");
       })
       .catch((error) => {
-        // Handle login error
-        setLoginError("invalid credentials"); // Show an error message to the user
+        setLoginError("Invalid credentials");
       });
   };
 
@@ -39,19 +35,16 @@ const Login = () => {
     e.preventDefault();
     setRegisterError("");
 
-    // Send registration request to the server
     axios
-      .post("http://localhost:5000/api/register", {
+      .post("http://localhost:5000/api/users/register", {
         username: registerUsername,
         password: registerPassword,
       })
       .then((response) => {
-        // Handle successful registration
-        console.log(response.data.message); // You can show a success message or redirect to the login page
+        // Registration successful
       })
       .catch((error) => {
-        // Handle registration error
-        setRegisterError("username already exists"); // Show an error message to the user
+        setRegisterError(error.response.data.error || "Registration failed");
       });
   };
 

@@ -40,3 +40,17 @@ exports.login = async (req, res) => {
     res.status(500).json({ error: "Server error" });
   }
 };
+
+exports.getUserByUsername = async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Exclude sensitive data like password
+    const userData = { username: user.username /* other user data */ };
+    res.json(userData);
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
+  }
+};

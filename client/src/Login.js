@@ -8,14 +8,16 @@ const Login = () => {
   const [loginPassword, setLoginPassword] = useState("");
   const [registerUsername, setRegisterUsername] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
-  const [loginError, setLoginError] = useState("");
-  const [registerError, setRegisterError] = useState("");
+  const [loginMsg, setLoginMsg] = useState("");
+  const [registerMsg, setRegisterMsg] = useState("");
+  const [messageType, setMessageType] = useState("success");
 
   let navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
-    setLoginError("");
+    setLoginMsg("Logging in...");
+    setMessageType("success");
 
     axios
       .post("http://localhost:5000/api/users/login", {
@@ -23,17 +25,25 @@ const Login = () => {
         password: loginPassword,
       })
       .then((response) => {
-        localStorage.setItem("token", response.data.token);
-        navigate("/home");
+        setTimeout(() => {
+          localStorage.setItem("username", loginUsername);
+          localStorage.setItem("token", response.data.token);
+          navigate("/home");
+        }, 1000); // Adjust the timeout duration as needed
       })
       .catch((error) => {
-        setLoginError("Invalid credentials");
+        setTimeout(() => {
+          setLoginMsg("Invalid credentials");
+          setMessageType("error");
+          setTimeout(() => setLoginMsg(""), 3000);
+        }, 1000); // Adjust the timeout duration as needed
       });
   };
 
   const handleRegister = (e) => {
     e.preventDefault();
-    setRegisterError("");
+    setRegisterMsg("Registering...");
+    setMessageType("success");
 
     axios
       .post("http://localhost:5000/api/users/register", {
@@ -41,15 +51,29 @@ const Login = () => {
         password: registerPassword,
       })
       .then((response) => {
-        // Registration successful
+        // Show "Registering..." for some time and then show "Registration successful"
+        setTimeout(() => {
+          localStorage.setItem("username", registerUsername);
+          localStorage.setItem("token", response.data.token);
+
+          // After showing "Registration successful", navigate to home
+          setTimeout(() => {
+            navigate("/home");
+          }, 1000); // Adjust time as needed
+        }, 1000); // Adjust time as needed for "Registering..."
       })
       .catch((error) => {
-        setRegisterError(error.response.data.error || "Registration failed");
+        // Show error message for some time before clearing it
+        setTimeout(() => {
+          setRegisterMsg(error.response.data.error || "Registration failed");
+          setMessageType("error");
+          setTimeout(() => setRegisterMsg(""), 3000); // Clear the message after some time
+        }, 1000); // Adjust time as needed for showing "Registering..."
       });
   };
 
   return (
-    <div>
+    <div className="Login">
       <form className="login-box" method="post" onSubmit={handleLogin}>
         <fieldset>
           <legend>Login</legend>
@@ -84,7 +108,13 @@ const Login = () => {
               <td className="submit"></td>
               <td>
                 <input type="submit" value="Login"></input>
-                {loginError && <div className="error-msg">{loginError}</div>}
+                <div
+                  className={`msg ${
+                    messageType === "error" ? "msg-error" : "msg-success"
+                  }`}
+                >
+                  {loginMsg}
+                </div>
               </td>
             </tr>
           </table>
@@ -124,9 +154,13 @@ const Login = () => {
               <td className="submit"></td>
               <td>
                 <input type="submit" value="Register"></input>
-                {registerError && (
-                  <div className="error-msg">{registerError}</div>
-                )}
+                <div
+                  className={`msg ${
+                    messageType === "error" ? "msg-error" : "msg-success"
+                  }`}
+                >
+                  {registerMsg}
+                </div>
               </td>
             </tr>
           </table>

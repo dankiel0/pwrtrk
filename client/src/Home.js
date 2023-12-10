@@ -1,27 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import ExerciseInfo from "./ExerciseInfo";
-import "./Home.css";
 import axios from "axios";
+import "./Home.css";
+import { EXERCISES } from "./exerciseList"; // Assuming EXERCISES is your array of exercises
 
 function Home() {
-  const [selectedExercise, setSelectedExercise] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [exercises, setExercises] = useState([]);
+  const [filteredExercises, setFilteredExercises] = useState(EXERCISES);
 
   useEffect(() => {
-    // Fetch exercises from the server when the component mounts
-    axios
-      .get("http://localhost:5000/api/exercises")
-      .then((response) => {
-        setExercises(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    // Fetch selected user data here (you need to get the username from localStorage or wherever you store it)
     const username = localStorage.getItem("username");
     if (username) {
       axios
@@ -30,34 +18,35 @@ function Home() {
           setSelectedUser(response.data);
         })
         .catch((error) => {
-          console.log(error);
+          console.error("Error fetching user data:", error);
         });
     }
   }, []);
- 
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
-    setSelectedExercise(""); // Clear selected exercise when searching
+    const filtered = EXERCISES.filter((exercise) =>
+      exercise.toLowerCase().includes(e.target.value.toLowerCase())
+    );
+    setFilteredExercises(filtered);
   };
 
-  const filteredExercises = exercises.filter((exercise) =>
-    exercise.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleLogout = () => {
+    localStorage.removeItem("username");
+    // Redirect to login page or handle logout
+  };
 
   return (
     <div className="Home">
-      {/* Upper Menu */}
-      <div className="menu">
-        <div className="upper-menu">
-          Welcome, {localStorage.getItem("username")}
-          <Link to="/edit">Edit Profile</Link>
-          <Link to="/help">Help</Link>
-          <Link to="/login">Log Out</Link>
-        </div>
+      <div className="upper-menu">
+        Welcome, {selectedUser ? selectedUser.username : "Loading..."}
+        <Link to="/edit">Edit Profile</Link>
+        <Link to="/login" onClick={handleLogout}>
+          Log Out
+        </Link>
       </div>
 
       <div className="content-container">
-        {/* Side Navigation Menu */}
         <div className="side-nav">
           <input
             className="search-exercise"
@@ -66,30 +55,13 @@ function Home() {
             onChange={handleSearchChange}
           />
           {filteredExercises.map((exercise, index) => (
-            <button
-              key={index}
-              className={`button ${
-                selectedExercise === exercise ? "highlighted" : ""
-              }`}
-              onClick={() => setSelectedExercise(exercise)}
-            >
+            <button key={index} className="button">
               {exercise}
             </button>
           ))}
         </div>
 
-        {/* Exercise Information */}
-        <div className="exercise-info-container">
-          {selectedExercise && (
-            <ExerciseInfo
-              exercise={selectedExercise}
-              selectedUser={selectedUser}
-            />
-          )}
-          {!selectedExercise && (
-            <p>Please select an exercise to see details.</p>
-          )}
-        </div>
+        <div className="exercise-info-container">hiiiii</div>
       </div>
     </div>
   );

@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Home.css";
 import { EXERCISES } from "./exerciseList"; // Assuming EXERCISES is your array of exercises
+import ExerciseInfo from "./ExerciseInfo";
 
 function Home() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredExercises, setFilteredExercises] = useState(EXERCISES);
+  const [selectedExercise, setSelectedExercise] = useState("");
 
   useEffect(() => {
     const username = localStorage.getItem("username");
@@ -55,13 +57,24 @@ function Home() {
             onChange={handleSearchChange}
           />
           {filteredExercises.map((exercise, index) => (
-            <button key={index} className="button">
+            <button
+              key={index}
+              className="button"
+              onClick={() => setSelectedExercise(exercise)}
+            >
               {exercise}
             </button>
           ))}
         </div>
 
-        <div className="exercise-info-container">hiiiii</div>
+        <div className="exercise-info-container">
+          {selectedExercise && (
+            <ExerciseInfo
+              exercise={selectedExercise}
+              selectedUser={selectedUser}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

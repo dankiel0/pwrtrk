@@ -2,10 +2,10 @@ const User = require("../models/User");
 const Workout = require("../models/Workout");
 
 exports.createWorkout = (req, res) => {
-  const { user, exercise, weight, reps, date, rpe, notes } = req.body;
+  const { username, exercise, weight, reps, date, rpe, notes } = req.body;
 
   // Find the user in the database based on the username
-  User.findOne({ username: user })
+  User.findOne({ username: username })
     .then((foundUser) => {
       if (!foundUser) {
         return res.status(404).json({ error: "User not found" });
@@ -13,7 +13,7 @@ exports.createWorkout = (req, res) => {
 
       // Create a new workout document and save it to the database
       const newWorkout = new Workout({
-        user: foundUser.username,
+        username: foundUser.username,
         exercise,
         weight,
         reps,
@@ -45,9 +45,12 @@ exports.getWorkoutsByUserAndExercise = (req, res) => {
         return res.status(404).json({ error: "User not found" });
       }
 
-      // Fetch workouts for the found user and exercise and send them in the response
-      Workout.find({ user: user.username, exercise })
+      Workout.find({ username: user.username, exercise })
         .then((workouts) => {
+          if (workouts.length === 0) {
+            // No workouts found for this exercise
+            return res.status(200).json({ message: "No workouts found for this exercise." });
+          }
           res.status(200).json(workouts);
         })
         .catch((error) => {

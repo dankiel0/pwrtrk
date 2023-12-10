@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 // Define a schema for the Workout model
 const workoutSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  username: { type: String, required: true },
   exercise: { type: String, required: true },
   weight: { type: Number, required: true },
   reps: { type: Number, required: true },

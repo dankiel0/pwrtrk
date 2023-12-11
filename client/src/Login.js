@@ -29,14 +29,14 @@ const Login = () => {
           localStorage.setItem("username", loginUsername);
           localStorage.setItem("token", response.data.token);
           navigate("/home");
-        }, 1000); // Adjust the timeout duration as needed
+        }, Math.floor(Math.random() * (1000 - 500 + 1) + 500)); // Adjust the timeout duration as needed
       })
       .catch((error) => {
         setTimeout(() => {
           setLoginMsg("Invalid credentials");
           setMessageType("error");
-          setTimeout(() => setLoginMsg(""), 3000);
-        }, 1000); // Adjust the timeout duration as needed
+          setTimeout(() => setLoginMsg(""), 2000);
+        }, Math.floor(Math.random() * (1000 - 500 + 1) + 500)); // Adjust the timeout duration as needed
       });
   };
 
@@ -56,19 +56,20 @@ const Login = () => {
           localStorage.setItem("username", registerUsername);
           localStorage.setItem("token", response.data.token);
 
+          setRegisterMsg("Registration completed!");
           // After showing "Registration successful", navigate to home
           setTimeout(() => {
             navigate("/home");
-          }, 1000); // Adjust time as needed
-        }, 1000); // Adjust time as needed for "Registering..."
+          }, Math.floor(Math.random() * (1000 - 500 + 1) + 500)); // Adjust time as needed
+        }, Math.floor(Math.random() * (1000 - 500 + 1) + 500)); // Adjust time as needed for "Registering..."
       })
       .catch((error) => {
         // Show error message for some time before clearing it
         setTimeout(() => {
           setRegisterMsg(error.response.data.error || "Registration failed");
           setMessageType("error");
-          setTimeout(() => setRegisterMsg(""), 3000); // Clear the message after some time
-        }, 1000); // Adjust time as needed for showing "Registering..."
+          setTimeout(() => setRegisterMsg(""), 2000); // Clear the message after some time
+        }, Math.floor(Math.random() * (1000 - 500 + 1) + 500)); // Adjust time as needed for showing "Registering..."
       });
   };
 

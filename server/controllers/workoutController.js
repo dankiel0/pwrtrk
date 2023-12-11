@@ -49,7 +49,9 @@ exports.getWorkoutsByUserAndExercise = (req, res) => {
         .then((workouts) => {
           if (workouts.length === 0) {
             // No workouts found for this exercise
-            return res.status(200).json({ message: "No workouts found for this exercise." });
+            return res
+              .status(200)
+              .json({ message: "No workouts found for this exercise." });
           }
           res.status(200).json(workouts);
         })

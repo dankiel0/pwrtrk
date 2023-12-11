@@ -3,9 +3,12 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import "./Home.css";
 import { EXERCISES } from "./exerciseList"; // Assuming EXERCISES is your array of exercises
-import ExerciseInfo from "./ExerciseInfo";
+import ExerciseInfoForm from "./ExerciseInfoForm";
+import WorkoutsTable from "./WorkoutsTable";
 
 function Home() {
+  const [workouts, setWorkouts] = useState([]);
+
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredExercises, setFilteredExercises] = useState(EXERCISES);
@@ -23,7 +26,24 @@ function Home() {
           console.error("Error fetching user data:", error);
         });
     }
-  }, []);
+
+    if (selectedUser && selectedExercise) {
+      const fetchWorkouts = async () => {
+        try {
+          const token = localStorage.getItem("token");
+          const response = await axios.get(
+            `http://localhost:5000/api/workouts/${selectedUser.username}/${exercise}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+          );
+          setWorkouts(response.data);
+        } catch (error) {
+          console.error("Error fetching workouts:", error);
+        }
+      };
+
+      fetchWorkouts();
+    }
+  }, [selectedUser, selectedExercise]);
 
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
@@ -69,11 +89,12 @@ function Home() {
 
         <div className="exercise-info-container">
           {selectedExercise && (
-            <ExerciseInfo
+            <ExerciseInfoForm
               exercise={selectedExercise}
               selectedUser={selectedUser}
             />
           )}
+          <WorkoutsTable workouts={workouts} />
         </div>
       </div>
     </div>

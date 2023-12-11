@@ -24,7 +24,8 @@
   width: calc(100% - 22px); /* Adjust the width to match the button width */
   margin-bottom: 5px;
   border: 1px solid #ccc;
-  padding: 0 10px;
+  text-align: left;
+  padding: 0 15px 0 5px;
 }
 
 .button {
@@ -36,7 +37,8 @@
   cursor: pointer;
 }
 
-.button.highlighted, .button:hover {
+.button.highlighted,
+.button:hover {
   background-color: #e6e6e6;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
